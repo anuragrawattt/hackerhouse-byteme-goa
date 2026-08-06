@@ -219,7 +219,7 @@ export default function CommandStudio({ uploadTriggerRef }) {
             </button>
 
             <fieldset style={{ border: 'none', margin: 0, padding: 0 }}>
-              <legend className="sr-only">Customize Builder ID Details</legend>
+              <legend style={{ color: '#e6e6e6', fontSize: '15px', fontWeight: '500', marginBottom: '12px', display: 'block' }}>Customize Builder ID Details</legend>
               <div style={{ background: 'rgba(255,255,255,0.03)', padding: '14px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.08)', display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 <div className="control-group-title" style={{ color: '#4ade80', marginBottom: '2px' }}>Customize Builder ID Card</div>
                 
