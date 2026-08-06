@@ -1,8 +1,3 @@
-/**
- * Canvas Frame Composite Engine for HH Goa 2026
- * Renders high-resolution (1080x1080) official Builder ID Pass
- */
-
 export const FRAME_PRESETS = [
   {
     id: 'official-builder-id',
@@ -13,13 +8,6 @@ export const FRAME_PRESETS = [
   }
 ];
 
-/**
- * Draws user image and composite HH Goa 2026 official Builder ID Pass onto canvas
- * 
- * @param {HTMLCanvasElement} canvas - Target HTML5 Canvas element.
- * @param {HTMLImageElement} imgElement - User uploaded image element.
- * @param {import('../types').FrameConfig} config - Configuration parameters.
- */
 export function drawFrameOnCanvas(canvas, imgElement, config) {
   if (!canvas || !imgElement) return;
 
@@ -43,26 +31,20 @@ export function drawFrameOnCanvas(canvas, imgElement, config) {
     showStickers = true
   } = config;
 
-  // Clear canvas ground
   ctx.fillStyle = '#07080a';
   ctx.fillRect(0, 0, width, height);
 
-  // Render official Builder ID pass
   drawOfficialBuilderIdPass(ctx, imgElement, width, height, {
     zoom, offsetX, offsetY, builderName, builderStack, builderTeam, builderTime, brightness, contrast, showStickers
   });
 }
 
-/* ---------------- OFFICIAL HH GOA BUILDER ID PASS OVERLAY ---------------- */
-
 function drawOfficialBuilderIdPass(ctx, imgElement, w, h, config) {
   const { zoom, offsetX, offsetY, builderName, builderStack, builderTeam, builderTime, brightness, contrast, showStickers } = config;
 
-  // 1. Dark Green Grid Background
   ctx.fillStyle = '#0b1a14';
   ctx.fillRect(0, 0, w, h);
 
-  // Subtle grid lines
   ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
   ctx.lineWidth = 1;
   const gridSize = 24;
@@ -73,29 +55,26 @@ function drawOfficialBuilderIdPass(ctx, imgElement, w, h, config) {
     ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
   }
 
-  // 2. Top Header
   ctx.font = '700 48px Georgia, serif';
   ctx.fillStyle = '#fdfbf7';
   ctx.fillText('HH GOA', 60, 75);
 
   ctx.font = '700 48px Georgia, serif';
-  ctx.fillStyle = '#eab308'; // Gold
+  ctx.fillStyle = '#eab308';
   ctx.fillText(' 2026', 255, 75);
 
   ctx.font = '600 24px Inter, sans-serif';
-  ctx.fillStyle = '#ec4899'; // Pink
+  ctx.fillStyle = '#ec4899';
   ctx.textAlign = 'right';
-  ctx.fillText('#FrameInGoa ✦', w - 60, 70);
+  ctx.fillText('#FrameInGoa', w - 60, 70);
   ctx.textAlign = 'left';
 
-  // 3. Central Photo Frame
   const frameX = 110;
   const frameY = 110;
   const frameW = 860;
   const frameH = 720;
   const radius = 32;
 
-  // Off-white photo border container
   ctx.save();
   ctx.fillStyle = '#f5f2e9';
   ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
@@ -106,7 +85,6 @@ function drawOfficialBuilderIdPass(ctx, imgElement, w, h, config) {
   ctx.fill();
   ctx.restore();
 
-  // Photo clipping area inside cream border
   const innerPad = 14;
   const photoX = frameX + innerPad;
   const photoY = frameY + innerPad;
@@ -118,12 +96,10 @@ function drawOfficialBuilderIdPass(ctx, imgElement, w, h, config) {
   ctx.roundRect(photoX, photoY, photoW, photoH, radius - 8);
   ctx.clip();
 
-  // Apply real-time brightness & contrast filters
   const bVal = 100 + brightness;
   const cVal = 100 + contrast;
   ctx.filter = `brightness(${bVal}%) contrast(${cVal}%)`;
 
-  // Cover-fit user photo rendering inside box
   const imgWidth = imgElement.naturalWidth || imgElement.width;
   const imgHeight = imgElement.naturalHeight || imgElement.height;
   const aspect = imgWidth / imgHeight;
@@ -141,9 +117,8 @@ function drawOfficialBuilderIdPass(ctx, imgElement, w, h, config) {
   const posY = photoY + (photoH - drawH) / 2 + offsetY;
 
   ctx.drawImage(imgElement, posX, posY, drawW, drawH);
-  ctx.restore(); // Resets filter and clip
+  ctx.restore();
 
-  // 4. Top-Left Sticker ("BUILD IN PUBLIC") - Render if showStickers is true
   if (showStickers) {
     ctx.save();
     ctx.translate(190, 220);
@@ -174,7 +149,6 @@ function drawOfficialBuilderIdPass(ctx, imgElement, w, h, config) {
     ctx.restore();
   }
 
-  // 5. Top-Right Stamp ("HACK HARD 2026 GOA HARDER")
   if (showStickers) {
     ctx.save();
     ctx.translate(860, 230);
@@ -212,7 +186,6 @@ function drawOfficialBuilderIdPass(ctx, imgElement, w, h, config) {
     ctx.restore();
   }
 
-  // 6. Bottom-Left Builder ID Card
   ctx.save();
   ctx.translate(280, 680);
   ctx.rotate(-2 * Math.PI / 180);
@@ -257,13 +230,13 @@ function drawOfficialBuilderIdPass(ctx, imgElement, w, h, config) {
   ctx.fillStyle = '#eab308';
   ctx.fill();
 
-  ctx.font = '18px sans-serif';
+  ctx.font = '700 16px Inter, sans-serif';
+  ctx.fillStyle = '#064e3b';
   ctx.textAlign = 'center';
-  ctx.fillText('🌴', 170, 58);
+  ctx.fillText('GOA', 170, 58);
 
   ctx.restore();
 
-  // 7. Bottom-Right Sticker ("BUILT DIFFERENT / BUILT IN GOA")
   if (showStickers) {
     ctx.save();
     ctx.translate(790, 680);
@@ -290,7 +263,6 @@ function drawOfficialBuilderIdPass(ctx, imgElement, w, h, config) {
     ctx.restore();
   }
 
-  // 8. Vertical Dotted Side Labels
   ctx.save();
   ctx.translate(45, 460);
   ctx.rotate(-90 * Math.PI / 180);
@@ -309,7 +281,6 @@ function drawOfficialBuilderIdPass(ctx, imgElement, w, h, config) {
   ctx.fillText('SHIP  •  LEARN  •  REPEAT', 0, 0);
   ctx.restore();
 
-  // 9. Bottom Glass Bar with Centered Hacker House Goa 2026
   const navW = 720;
   const navH = 124;
   const navX = (w - navW) / 2;
@@ -329,15 +300,15 @@ function drawOfficialBuilderIdPass(ctx, imgElement, w, h, config) {
   ctx.textAlign = 'center';
   ctx.font = '700 26px Georgia, serif';
   ctx.fillStyle = '#fdfbf7';
-  ctx.fillText('HACKER HOUSE GOA 2026', w / 2, navY + 44);
+  ctx.fillText('HACKER HOUSE GOA 2026', w / 2, navY + 40);
 
-  ctx.font = '700 12px Inter, sans-serif';
+  ctx.font = '700 16px Inter, sans-serif';
   ctx.fillStyle = '#eab308';
-  ctx.fillText('CONNECT  •  BUILD  •  GROW', w / 2, navY + 70);
+  ctx.fillText('CONNECT  •  BUILD  •  GROW', w / 2, navY + 68);
 
-  ctx.font = '600 13px "Geist Mono", monospace';
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
-  ctx.fillText(builderTime || '2:47 pm studio', w / 2, navY + 96);
+  ctx.font = '600 17px "Geist Mono", monospace';
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+  ctx.fillText(builderTime || '2:47 pm studio', w / 2, navY + 98);
 
   ctx.restore();
 }
