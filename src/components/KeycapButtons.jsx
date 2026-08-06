@@ -12,7 +12,7 @@ export default function KeycapButtons({ onUploadTrigger }) {
       <div className="keycap-row">
         <button onClick={onUploadTrigger} className="keycap-btn" aria-label="Upload Photo">
           <UploadCloud size={18} />
-          <span>Upload Profile Photo</span>
+          <span>Upload Photo</span>
         </button>
 
         <button onClick={scrollToStudio} className="keycap-btn" aria-label="Adjust Frame">
