@@ -1,0 +1,17 @@
+{
+  "short_name": "HH Goa '26",
+  "name": "HH Goa 2026 PFP Builder Pass Studio",
+  "description": "Generate your official HH Goa 2026 PFP Builder Pass graphic client-side.",
+  "icons": [
+    {
+      "src": "/default-avatar.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#07080a",
+  "theme_color": "#064e3b",
+  "display": "standalone",
+  "orientation": "portrait"
+}

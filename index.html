@@ -5,10 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HH Goa 2026 — PFP Frame Generator</title>
     <meta name="description" content="Generate your custom HH Goa 2026 branded PFP frame. Fast client-side image compositing with living warm aurora developer aesthetics." />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#064e3b" />
     <!-- Google Fonts: Inter & Geist Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch(() => {});
+        });
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
