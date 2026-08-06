@@ -11,7 +11,6 @@ export default function PillNav() {
       </a>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-        <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#4ade80' }} />
         <span>October 2026 • Goa, India</span>
       </div>
     </nav>

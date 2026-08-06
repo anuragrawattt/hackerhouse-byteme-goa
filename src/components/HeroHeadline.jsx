@@ -4,7 +4,6 @@ export default function HeroHeadline() {
   return (
     <header className="hero-content-section">
       <div className="eyebrow-chip">
-        <span className="eyebrow-dot" />
         <span>HACKER HOUSE GOA • OCTOBER 2026</span>
       </div>
 
