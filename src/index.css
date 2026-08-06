@@ -1,12 +1,7 @@
-/* Main Design System Entry Point */
-
 @import './styles/tokens.css';
 @import './styles/aurora.css';
 @import './styles/keycaps.css';
 
-/* ----------------------------------------------------
-   FLOATING PILL NAV
----------------------------------------------------- */
 .floating-pill-nav {
   display: flex;
   align-items: center;
@@ -49,9 +44,6 @@
   letter-spacing: -0.01em;
 }
 
-/* ----------------------------------------------------
-   HERO TYPOGRAPHY & HEADLINE
----------------------------------------------------- */
 .hero-content-section {
   position: relative;
   z-index: 10;
@@ -114,9 +106,6 @@
   margin: 0 auto 36px auto;
 }
 
-/* ----------------------------------------------------
-   DARK-GLASS STUDIO PANEL
----------------------------------------------------- */
 .command-mockup-wrapper {
   max-width: 860px;
   margin: 0 auto 48px auto;

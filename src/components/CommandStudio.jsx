@@ -9,12 +9,10 @@ export default function CommandStudio({ uploadTriggerRef }) {
   const [offsetX, setOffsetX] = useState(0);
   const [offsetY, setOffsetY] = useState(0);
 
-  // Photo Adjustments
   const [brightness, setBrightness] = useState(0);
   const [contrast, setContrast] = useState(0);
   const [showStickers, setShowStickers] = useState(true);
 
-  // Custom Builder ID fields
   const [builderName, setBuilderName] = useState('Anurag Rawat');
   const [builderStack, setBuilderStack] = useState('Frontend developer');
   const [builderTeam, setBuilderTeam] = useState('Byte Me');
@@ -29,7 +27,6 @@ export default function CommandStudio({ uploadTriggerRef }) {
   const canvasRef = useRef(null);
   const fileInputRef = useRef(null);
 
-  // Default sample image
   useEffect(() => {
     const defaultImg = new window.Image();
     defaultImg.crossOrigin = 'anonymous';
@@ -40,7 +37,6 @@ export default function CommandStudio({ uploadTriggerRef }) {
     };
   }, []);
 
-  // Redraw canvas whenever options change
   useEffect(() => {
     if (canvasRef.current && loadedImage) {
       drawFrameOnCanvas(canvasRef.current, loadedImage, {
@@ -58,7 +54,6 @@ export default function CommandStudio({ uploadTriggerRef }) {
     }
   }, [loadedImage, zoom, offsetX, offsetY, builderName, builderStack, builderTeam, builderTime, brightness, contrast, showStickers]);
 
-  // Connect external trigger
   useEffect(() => {
     if (uploadTriggerRef) {
       uploadTriggerRef.current = () => {
@@ -67,7 +62,6 @@ export default function CommandStudio({ uploadTriggerRef }) {
     }
   }, [uploadTriggerRef]);
 
-  // Keyboard navigation for studio
   const handleKeyDown = (e) => {
     if (e.target.tagName === 'INPUT') return;
 
@@ -80,7 +74,6 @@ export default function CommandStudio({ uploadTriggerRef }) {
     if (e.key === '-') { setZoom(prev => Math.max(0.5, prev - 0.1)); e.preventDefault(); }
   };
 
-  // File selection handler
   const handleFileChange = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -102,7 +95,6 @@ export default function CommandStudio({ uploadTriggerRef }) {
     }
   };
 
-  // Mouse drag handlers
   const handleMouseDown = (e) => {
     if (!loadedImage) return;
     setIsDragging(true);
@@ -117,7 +109,6 @@ export default function CommandStudio({ uploadTriggerRef }) {
 
   const handleMouseUp = () => setIsDragging(false);
 
-  // Touch drag support
   const handleTouchStart = (e) => {
     if (!loadedImage || !e.touches[0]) return;
     setIsDragging(true);
@@ -130,7 +121,6 @@ export default function CommandStudio({ uploadTriggerRef }) {
     setOffsetY(e.touches[0].clientY - dragStart.y);
   };
 
-  // Export PNG
   const handleDownloadPNG = () => {
     if (!canvasRef.current) return;
     const dataUrl = canvasRef.current.toDataURL('image/png');
@@ -152,7 +142,7 @@ export default function CommandStudio({ uploadTriggerRef }) {
   };
 
   const handleShareToX = () => {
-    const tweetText = encodeURIComponent(`Just got my official HH Goa 2026 Builder Pass! 🔥 #FrameInGoa`);
+    const tweetText = encodeURIComponent(`Just got my official HH Goa 2026 Builder Pass! #FrameInGoa`);
     window.open(`https://twitter.com/intent/tweet?text=${tweetText}`, '_blank');
   };
 
@@ -223,7 +213,6 @@ export default function CommandStudio({ uploadTriggerRef }) {
               <span>Upload Photo (JPG/PNG/HEIC)</span>
             </button>
 
-            {/* Editable Builder Pass Details */}
             <fieldset style={{ border: 'none', margin: 0, padding: 0 }}>
               <legend className="sr-only">Customize Builder ID Details</legend>
               <div style={{ background: 'rgba(255,255,255,0.03)', padding: '14px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.08)', display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -281,9 +270,7 @@ export default function CommandStudio({ uploadTriggerRef }) {
               </div>
             </fieldset>
 
-            {/* Photo Adjustments: Zoom, Brightness, Contrast & Sticker Toggle */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              {/* Zoom Slider */}
               <div className="slider-control">
                 <div className="slider-label">
                   <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
@@ -308,7 +295,6 @@ export default function CommandStudio({ uploadTriggerRef }) {
                 />
               </div>
 
-              {/* Brightness Slider */}
               <div className="slider-control">
                 <div className="slider-label">
                   <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
@@ -330,7 +316,6 @@ export default function CommandStudio({ uploadTriggerRef }) {
                 />
               </div>
 
-              {/* Contrast Slider */}
               <div className="slider-control">
                 <div className="slider-label">
                   <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
@@ -352,7 +337,6 @@ export default function CommandStudio({ uploadTriggerRef }) {
                 />
               </div>
 
-              {/* Sticker Toggle Button */}
               <button
                 type="button"
                 className="preset-card-btn"

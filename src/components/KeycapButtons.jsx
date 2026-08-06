@@ -8,7 +8,6 @@ export default function KeycapButtons({ onUploadTrigger }) {
 
   return (
     <div className="hero-content-section" style={{ marginTop: 0 }}>
-      {/* Tactile Keycap Buttons */}
       <div className="keycap-row">
         <button onClick={onUploadTrigger} className="keycap-btn" aria-label="Upload Photo">
           <UploadCloud size={18} />
@@ -21,7 +20,6 @@ export default function KeycapButtons({ onUploadTrigger }) {
         </button>
       </div>
 
-      {/* Caption */}
       <p className="install-caption">
         PNG, JPG, HEIC supported • Instant client-side render • 100% private
       </p>
