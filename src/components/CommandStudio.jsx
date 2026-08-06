@@ -3,6 +3,7 @@ import { UploadCloud, Download, Share2, RefreshCw, ZoomIn, Move, Palmtree, User,
 import confetti from 'canvas-confetti';
 import { drawFrameOnCanvas } from '../utils/frameOverlay';
 import { loadImageFromFile } from '../utils/imageLoader';
+import defaultAvatarUrl from '../assets/default-avatar.jpg';
 
 export default function CommandStudio({ uploadTriggerRef }) {
   const [zoom, setZoom] = useState(1);
@@ -29,16 +30,20 @@ export default function CommandStudio({ uploadTriggerRef }) {
 
   useEffect(() => {
     const defaultImg = new window.Image();
-    defaultImg.crossOrigin = 'anonymous';
-    defaultImg.src = '/default-avatar.jpg';
     defaultImg.onload = () => {
       setLoadedImage(defaultImg);
       setStatusAnnouncement('Default Builder Pass avatar loaded.');
     };
+    defaultImg.onerror = () => {
+      const fallbackImg = new window.Image();
+      fallbackImg.onload = () => setLoadedImage(fallbackImg);
+      fallbackImg.src = '/default-avatar.jpg';
+    };
+    defaultImg.src = defaultAvatarUrl;
   }, []);
 
   useEffect(() => {
-    if (canvasRef.current && loadedImage) {
+    if (canvasRef.current) {
       drawFrameOnCanvas(canvasRef.current, loadedImage, {
         zoom,
         offsetX,

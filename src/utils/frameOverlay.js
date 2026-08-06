@@ -96,27 +96,36 @@ function drawOfficialBuilderIdPass(ctx, imgElement, w, h, config) {
   ctx.roundRect(photoX, photoY, photoW, photoH, radius - 8);
   ctx.clip();
 
-  const bVal = 100 + brightness;
-  const cVal = 100 + contrast;
-  ctx.filter = `brightness(${bVal}%) contrast(${cVal}%)`;
+  if (imgElement && (imgElement.naturalWidth || imgElement.width)) {
+    const bVal = 100 + brightness;
+    const cVal = 100 + contrast;
+    ctx.filter = `brightness(${bVal}%) contrast(${cVal}%)`;
 
-  const imgWidth = imgElement.naturalWidth || imgElement.width;
-  const imgHeight = imgElement.naturalHeight || imgElement.height;
-  const aspect = imgWidth / imgHeight;
+    const imgWidth = imgElement.naturalWidth || imgElement.width || 800;
+    const imgHeight = imgElement.naturalHeight || imgElement.height || 800;
+    const aspect = imgWidth / imgHeight;
 
-  let drawW, drawH;
-  if (aspect > photoW / photoH) {
-    drawH = photoH * zoom;
-    drawW = drawH * aspect;
+    let drawW, drawH;
+    if (aspect > photoW / photoH) {
+      drawH = photoH * zoom;
+      drawW = drawH * aspect;
+    } else {
+      drawW = photoW * zoom;
+      drawH = drawW / aspect;
+    }
+
+    const posX = photoX + (photoW - drawW) / 2 + offsetX;
+    const posY = photoY + (photoH - drawH) / 2 + offsetY;
+
+    ctx.drawImage(imgElement, posX, posY, drawW, drawH);
   } else {
-    drawW = photoW * zoom;
-    drawH = drawW / aspect;
+    ctx.fillStyle = '#1e293b';
+    ctx.fillRect(photoX, photoY, photoW, photoH);
+    ctx.fillStyle = '#94a3b8';
+    ctx.font = '600 24px Inter, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Loading photo...', photoX + photoW / 2, photoY + photoH / 2);
   }
-
-  const posX = photoX + (photoW - drawW) / 2 + offsetX;
-  const posY = photoY + (photoH - drawH) / 2 + offsetY;
-
-  ctx.drawImage(imgElement, posX, posY, drawW, drawH);
   ctx.restore();
 
   if (showStickers) {
