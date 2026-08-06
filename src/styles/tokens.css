@@ -1,4 +1,14 @@
-/* Synapse & HH Goa Design Tokens */
+/* Synapse & HH Goa Design Tokens & Global Resets */
+
+html, body, #root {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #07080a !important;
+  color: #ffffff;
+  overflow-x: hidden;
+}
 
 :root {
   --bg-ground: #07080a;
