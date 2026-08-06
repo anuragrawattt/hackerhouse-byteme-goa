@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { UploadCloud, Download, Share2, RefreshCw, ZoomIn, Move, Palmtree, User, Code, Users, Clock } from 'lucide-react';
+import { UploadCloud, Download, Share2, RefreshCw, ZoomIn, Move, Palmtree, User, Code, Users, Clock, Sun, Contrast, Eye } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { drawFrameOnCanvas } from '../utils/frameOverlay';
 import { loadImageFromFile } from '../utils/imageLoader';
@@ -8,6 +8,11 @@ export default function CommandStudio({ uploadTriggerRef }) {
   const [zoom, setZoom] = useState(1);
   const [offsetX, setOffsetX] = useState(0);
   const [offsetY, setOffsetY] = useState(0);
+
+  // Photo Adjustments
+  const [brightness, setBrightness] = useState(0);
+  const [contrast, setContrast] = useState(0);
+  const [showStickers, setShowStickers] = useState(true);
 
   // Custom Builder ID fields
   const [builderName, setBuilderName] = useState('Anurag Rawat');
@@ -45,10 +50,13 @@ export default function CommandStudio({ uploadTriggerRef }) {
         builderName,
         builderStack,
         builderTeam,
-        builderTime
+        builderTime,
+        brightness,
+        contrast,
+        showStickers
       });
     }
-  }, [loadedImage, zoom, offsetX, offsetY, builderName, builderStack, builderTeam, builderTime]);
+  }, [loadedImage, zoom, offsetX, offsetY, builderName, builderStack, builderTeam, builderTime, brightness, contrast, showStickers]);
 
   // Connect external trigger
   useEffect(() => {
@@ -59,9 +67,9 @@ export default function CommandStudio({ uploadTriggerRef }) {
     }
   }, [uploadTriggerRef]);
 
-  // Keyboard navigation for studio (Arrow keys for panning, +/- for zooming)
+  // Keyboard navigation for studio
   const handleKeyDown = (e) => {
-    if (e.target.tagName === 'INPUT') return; // Don't interrupt text input typing
+    if (e.target.tagName === 'INPUT') return;
 
     const step = 10;
     if (e.key === 'ArrowLeft') { setOffsetX(prev => prev - step); e.preventDefault(); }
@@ -150,7 +158,6 @@ export default function CommandStudio({ uploadTriggerRef }) {
 
   return (
     <div className="command-mockup-wrapper" id="studio" onKeyDown={handleKeyDown} tabIndex={0}>
-      {/* Screen reader ARIA live announcement */}
       <div className="sr-only" aria-live="polite" style={{ position: 'absolute', width: '1px', height: '1px', overflow: 'hidden', clip: 'rect(0,0,0,0)' }}>
         {statusAnnouncement}
       </div>
@@ -216,6 +223,7 @@ export default function CommandStudio({ uploadTriggerRef }) {
               <span>Upload Photo (JPG/PNG/HEIC)</span>
             </button>
 
+            {/* Editable Builder Pass Details */}
             <fieldset style={{ border: 'none', margin: 0, padding: 0 }}>
               <legend className="sr-only">Customize Builder ID Details</legend>
               <div style={{ background: 'rgba(255,255,255,0.03)', padding: '14px', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.08)', display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -273,28 +281,93 @@ export default function CommandStudio({ uploadTriggerRef }) {
               </div>
             </fieldset>
 
-            <div className="slider-control">
-              <div className="slider-label">
-                <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <ZoomIn size={12} aria-hidden="true" />
-                  <label htmlFor="zoom-slider">Photo Zoom</label>
-                </span>
-                <span>{Math.round(zoom * 100)}%</span>
+            {/* Photo Adjustments: Zoom, Brightness, Contrast & Sticker Toggle */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {/* Zoom Slider */}
+              <div className="slider-control">
+                <div className="slider-label">
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <ZoomIn size={12} aria-hidden="true" />
+                    <label htmlFor="zoom-slider">Photo Zoom</label>
+                  </span>
+                  <span>{Math.round(zoom * 100)}%</span>
+                </div>
+                <input
+                  id="zoom-slider"
+                  type="range"
+                  min="0.5"
+                  max="2.5"
+                  step="0.05"
+                  value={zoom}
+                  onChange={(e) => setZoom(parseFloat(e.target.value))}
+                  aria-label="Photo Zoom Scale"
+                  aria-valuemin={50}
+                  aria-valuemax={250}
+                  aria-valuenow={Math.round(zoom * 100)}
+                  className="custom-range-slider"
+                />
               </div>
-              <input
-                id="zoom-slider"
-                type="range"
-                min="0.5"
-                max="2.5"
-                step="0.05"
-                value={zoom}
-                onChange={(e) => setZoom(parseFloat(e.target.value))}
-                aria-label="Photo Zoom Scale"
-                aria-valuemin={50}
-                aria-valuemax={250}
-                aria-valuenow={Math.round(zoom * 100)}
-                className="custom-range-slider"
-              />
+
+              {/* Brightness Slider */}
+              <div className="slider-control">
+                <div className="slider-label">
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <Sun size={12} aria-hidden="true" />
+                    <label htmlFor="brightness-slider">Brightness</label>
+                  </span>
+                  <span>{brightness > 0 ? `+${brightness}` : brightness}</span>
+                </div>
+                <input
+                  id="brightness-slider"
+                  type="range"
+                  min="-50"
+                  max="50"
+                  step="1"
+                  value={brightness}
+                  onChange={(e) => setBrightness(parseInt(e.target.value, 10))}
+                  aria-label="Photo Brightness Filter"
+                  className="custom-range-slider"
+                />
+              </div>
+
+              {/* Contrast Slider */}
+              <div className="slider-control">
+                <div className="slider-label">
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <Contrast size={12} aria-hidden="true" />
+                    <label htmlFor="contrast-slider">Contrast</label>
+                  </span>
+                  <span>{contrast > 0 ? `+${contrast}` : contrast}</span>
+                </div>
+                <input
+                  id="contrast-slider"
+                  type="range"
+                  min="-50"
+                  max="50"
+                  step="1"
+                  value={contrast}
+                  onChange={(e) => setContrast(parseInt(e.target.value, 10))}
+                  aria-label="Photo Contrast Filter"
+                  className="custom-range-slider"
+                />
+              </div>
+
+              {/* Sticker Toggle Button */}
+              <button
+                type="button"
+                className="preset-card-btn"
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 12px' }}
+                onClick={() => setShowStickers(prev => !prev)}
+                aria-pressed={showStickers}
+              >
+                <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Eye size={14} aria-hidden="true" />
+                  <span>Stickers Overlay</span>
+                </span>
+                <span style={{ color: showStickers ? '#4ade80' : 'var(--text-muted)', fontSize: '11px', fontWeight: 600 }}>
+                  {showStickers ? 'VISIBLE' : 'HIDDEN'}
+                </span>
+              </button>
             </div>
 
             <div className="action-buttons-group">

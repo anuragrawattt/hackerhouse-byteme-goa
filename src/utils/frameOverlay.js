@@ -15,6 +15,10 @@ export const FRAME_PRESETS = [
 
 /**
  * Draws user image and composite HH Goa 2026 official Builder ID Pass onto canvas
+ * 
+ * @param {HTMLCanvasElement} canvas - Target HTML5 Canvas element.
+ * @param {HTMLImageElement} imgElement - User uploaded image element.
+ * @param {import('../types').FrameConfig} config - Configuration parameters.
  */
 export function drawFrameOnCanvas(canvas, imgElement, config) {
   if (!canvas || !imgElement) return;
@@ -33,7 +37,10 @@ export function drawFrameOnCanvas(canvas, imgElement, config) {
     builderName = 'Anurag Rawat',
     builderStack = 'Frontend developer',
     builderTeam = 'Byte Me',
-    builderTime = '2:47 pm studio'
+    builderTime = '2:47 pm studio',
+    brightness = 0,
+    contrast = 0,
+    showStickers = true
   } = config;
 
   // Clear canvas ground
@@ -42,14 +49,14 @@ export function drawFrameOnCanvas(canvas, imgElement, config) {
 
   // Render official Builder ID pass
   drawOfficialBuilderIdPass(ctx, imgElement, width, height, {
-    zoom, offsetX, offsetY, builderName, builderStack, builderTeam, builderTime
+    zoom, offsetX, offsetY, builderName, builderStack, builderTeam, builderTime, brightness, contrast, showStickers
   });
 }
 
 /* ---------------- OFFICIAL HH GOA BUILDER ID PASS OVERLAY ---------------- */
 
 function drawOfficialBuilderIdPass(ctx, imgElement, w, h, config) {
-  const { zoom, offsetX, offsetY, builderName, builderStack, builderTeam, builderTime } = config;
+  const { zoom, offsetX, offsetY, builderName, builderStack, builderTeam, builderTime, brightness, contrast, showStickers } = config;
 
   // 1. Dark Green Grid Background
   ctx.fillStyle = '#0b1a14';
@@ -67,7 +74,6 @@ function drawOfficialBuilderIdPass(ctx, imgElement, w, h, config) {
   }
 
   // 2. Top Header
-  // HH GOA 2026 Left
   ctx.font = '700 48px Georgia, serif';
   ctx.fillStyle = '#fdfbf7';
   ctx.fillText('HH GOA', 60, 75);
@@ -76,7 +82,6 @@ function drawOfficialBuilderIdPass(ctx, imgElement, w, h, config) {
   ctx.fillStyle = '#eab308'; // Gold
   ctx.fillText(' 2026', 255, 75);
 
-  // #FrameInGoa Right
   ctx.font = '600 24px Inter, sans-serif';
   ctx.fillStyle = '#ec4899'; // Pink
   ctx.textAlign = 'right';
@@ -113,6 +118,11 @@ function drawOfficialBuilderIdPass(ctx, imgElement, w, h, config) {
   ctx.roundRect(photoX, photoY, photoW, photoH, radius - 8);
   ctx.clip();
 
+  // Apply real-time brightness & contrast filters
+  const bVal = 100 + brightness;
+  const cVal = 100 + contrast;
+  ctx.filter = `brightness(${bVal}%) contrast(${cVal}%)`;
+
   // Cover-fit user photo rendering inside box
   const imgWidth = imgElement.naturalWidth || imgElement.width;
   const imgHeight = imgElement.naturalHeight || imgElement.height;
@@ -131,74 +141,76 @@ function drawOfficialBuilderIdPass(ctx, imgElement, w, h, config) {
   const posY = photoY + (photoH - drawH) / 2 + offsetY;
 
   ctx.drawImage(imgElement, posX, posY, drawW, drawH);
-  ctx.restore();
+  ctx.restore(); // Resets filter and clip
 
-  // 4. Top-Left Sticker ("BUILD IN PUBLIC")
-  ctx.save();
-  ctx.translate(190, 220);
-  ctx.rotate(-7 * Math.PI / 180);
+  // 4. Top-Left Sticker ("BUILD IN PUBLIC") - Render if showStickers is true
+  if (showStickers) {
+    ctx.save();
+    ctx.translate(190, 220);
+    ctx.rotate(-7 * Math.PI / 180);
 
-  ctx.fillStyle = '#fdfbf7';
-  ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
-  ctx.shadowBlur = 12;
-  ctx.shadowOffsetY = 6;
-  ctx.beginPath();
-  ctx.roundRect(-100, -45, 200, 90, 16);
-  ctx.fill();
+    ctx.fillStyle = '#fdfbf7';
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+    ctx.shadowBlur = 12;
+    ctx.shadowOffsetY = 6;
+    ctx.beginPath();
+    ctx.roundRect(-100, -45, 200, 90, 16);
+    ctx.fill();
 
-  ctx.shadowColor = 'transparent';
-  ctx.textAlign = 'center';
-  ctx.font = '700 20px Inter, sans-serif';
-  ctx.fillStyle = '#064e3b';
-  ctx.fillText('BUILD', 0, -12);
+    ctx.shadowColor = 'transparent';
+    ctx.textAlign = 'center';
+    ctx.font = '700 20px Inter, sans-serif';
+    ctx.fillStyle = '#064e3b';
+    ctx.fillText('BUILD', 0, -12);
 
-  ctx.font = '800 22px Inter, sans-serif';
-  ctx.fillStyle = '#ec4899';
-  ctx.fillText('IN PUBLIC', 0, 14);
+    ctx.font = '800 22px Inter, sans-serif';
+    ctx.fillStyle = '#ec4899';
+    ctx.fillText('IN PUBLIC', 0, 14);
 
-  ctx.font = '600 14px monospace';
-  ctx.fillStyle = '#064e3b';
-  ctx.fillText('</>', 0, 32);
+    ctx.font = '600 14px monospace';
+    ctx.fillStyle = '#064e3b';
+    ctx.fillText('</>', 0, 32);
 
-  ctx.restore();
+    ctx.restore();
+  }
 
   // 5. Top-Right Stamp ("HACK HARD 2026 GOA HARDER")
-  ctx.save();
-  ctx.translate(860, 230);
-  ctx.rotate(12 * Math.PI / 180);
+  if (showStickers) {
+    ctx.save();
+    ctx.translate(860, 230);
+    ctx.rotate(12 * Math.PI / 180);
 
-  // Circle background
-  ctx.fillStyle = '#fdfbf7';
-  ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
-  ctx.shadowBlur = 12;
-  ctx.beginPath();
-  ctx.arc(0, 0, 80, 0, Math.PI * 2);
-  ctx.fill();
+    ctx.fillStyle = '#fdfbf7';
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+    ctx.shadowBlur = 12;
+    ctx.beginPath();
+    ctx.arc(0, 0, 80, 0, Math.PI * 2);
+    ctx.fill();
 
-  // Dashed inner border
-  ctx.shadowColor = 'transparent';
-  ctx.strokeStyle = '#ec4899';
-  ctx.lineWidth = 3;
-  ctx.setLineDash([6, 6]);
-  ctx.beginPath();
-  ctx.arc(0, 0, 72, 0, Math.PI * 2);
-  ctx.stroke();
+    ctx.shadowColor = 'transparent';
+    ctx.strokeStyle = '#ec4899';
+    ctx.lineWidth = 3;
+    ctx.setLineDash([6, 6]);
+    ctx.beginPath();
+    ctx.arc(0, 0, 72, 0, Math.PI * 2);
+    ctx.stroke();
 
-  ctx.setLineDash([]);
-  ctx.textAlign = 'center';
-  ctx.font = '700 13px Inter, sans-serif';
-  ctx.fillStyle = '#ec4899';
-  ctx.fillText('HACK HARD', 0, -32);
+    ctx.setLineDash([]);
+    ctx.textAlign = 'center';
+    ctx.font = '700 13px Inter, sans-serif';
+    ctx.fillStyle = '#ec4899';
+    ctx.fillText('HACK HARD', 0, -32);
 
-  ctx.font = '800 32px Georgia, serif';
-  ctx.fillStyle = '#064e3b';
-  ctx.fillText('2026', 0, 8);
+    ctx.font = '800 32px Georgia, serif';
+    ctx.fillStyle = '#064e3b';
+    ctx.fillText('2026', 0, 8);
 
-  ctx.font = '700 13px Inter, sans-serif';
-  ctx.fillStyle = '#ec4899';
-  ctx.fillText('GOA HARDER', 0, 42);
+    ctx.font = '700 13px Inter, sans-serif';
+    ctx.fillStyle = '#ec4899';
+    ctx.fillText('GOA HARDER', 0, 42);
 
-  ctx.restore();
+    ctx.restore();
+  }
 
   // 6. Bottom-Left Builder ID Card
   ctx.save();
@@ -240,7 +252,6 @@ function drawOfficialBuilderIdPass(ctx, imgElement, w, h, config) {
   ctx.fillStyle = '#064e3b';
   ctx.fillText(builderTeam || 'Byte Me', -185, 70);
 
-  // Palm Icon Stamp on Badge
   ctx.beginPath();
   ctx.arc(170, 52, 22, 0, Math.PI * 2);
   ctx.fillStyle = '#eab308';
@@ -253,33 +264,34 @@ function drawOfficialBuilderIdPass(ctx, imgElement, w, h, config) {
   ctx.restore();
 
   // 7. Bottom-Right Sticker ("BUILT DIFFERENT / BUILT IN GOA")
-  ctx.save();
-  ctx.translate(790, 680);
-  ctx.rotate(5 * Math.PI / 180);
+  if (showStickers) {
+    ctx.save();
+    ctx.translate(790, 680);
+    ctx.rotate(5 * Math.PI / 180);
 
-  ctx.fillStyle = '#fdfbf7';
-  ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
-  ctx.shadowBlur = 16;
-  ctx.shadowOffsetY = 8;
-  ctx.beginPath();
-  ctx.roundRect(-140, -45, 280, 90, 16);
-  ctx.fill();
+    ctx.fillStyle = '#fdfbf7';
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
+    ctx.shadowBlur = 16;
+    ctx.shadowOffsetY = 8;
+    ctx.beginPath();
+    ctx.roundRect(-140, -45, 280, 90, 16);
+    ctx.fill();
 
-  ctx.shadowColor = 'transparent';
-  ctx.textAlign = 'center';
-  ctx.font = '800 20px Inter, sans-serif';
-  ctx.fillStyle = '#064e3b';
-  ctx.fillText('BUILT DIFFERENT', 0, -8);
+    ctx.shadowColor = 'transparent';
+    ctx.textAlign = 'center';
+    ctx.font = '800 20px Inter, sans-serif';
+    ctx.fillStyle = '#064e3b';
+    ctx.fillText('BUILT DIFFERENT', 0, -8);
 
-  ctx.font = '800 22px Inter, sans-serif';
-  ctx.fillStyle = '#ec4899';
-  ctx.fillText('BUILT IN GOA', 0, 22);
+    ctx.font = '800 22px Inter, sans-serif';
+    ctx.fillStyle = '#ec4899';
+    ctx.fillText('BUILT IN GOA', 0, 22);
 
-  ctx.restore();
+    ctx.restore();
+  }
 
   // 8. Vertical Dotted Side Labels
   ctx.save();
-  // Left side
   ctx.translate(45, 460);
   ctx.rotate(-90 * Math.PI / 180);
   ctx.font = '700 12px Inter, sans-serif';
@@ -289,7 +301,6 @@ function drawOfficialBuilderIdPass(ctx, imgElement, w, h, config) {
   ctx.restore();
 
   ctx.save();
-  // Right side
   ctx.translate(w - 45, 460);
   ctx.rotate(90 * Math.PI / 180);
   ctx.font = '700 12px Inter, sans-serif';
