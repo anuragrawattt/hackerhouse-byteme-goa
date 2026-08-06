@@ -16,12 +16,12 @@ export default function App() {
   };
 
   return (
-    <div style={{ position: 'relative', minHeight: '100vh', width: '100%', background: '#07080a' }}>
+    <div style={{ position: 'relative', minHeight: '100vh', width: '100%', margin: 0, padding: 0, background: '#07080a', overflowX: 'hidden' }}>
       {/* Signature Living Animated Aurora Background */}
       <AuroraBackdrop />
 
       {/* Main Layout */}
-      <div style={{ position: 'relative', zIndex: 10 }}>
+      <div style={{ position: 'relative', zIndex: 10, margin: 0, padding: 0 }}>
         {/* Floating Pill Nav */}
         <PillNav />
 
