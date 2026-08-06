@@ -174,9 +174,6 @@ export default function CommandStudio({ uploadTriggerRef }) {
               HH GOA 2026 • Official Builder Pass Studio
             </h2>
           </div>
-          <span className="command-mode-pill" style={{ color: '#4ade80', borderColor: 'rgba(74, 222, 128, 0.3)', background: 'rgba(74, 222, 128, 0.1)' }}>
-            1080×1080 HD Pass
-          </span>
         </div>
 
         <div className="studio-workspace-container">
