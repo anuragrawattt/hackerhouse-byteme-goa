@@ -151,7 +151,7 @@ function drawOfficialBuilderIdPass(ctx, imgElement, w, h, config) {
     ctx.fillStyle = '#ec4899';
     ctx.fillText('IN PUBLIC', 0, 14);
 
-    ctx.font = '600 14px monospace';
+    ctx.font = '600 14px Inter, sans-serif';
     ctx.fillStyle = '#064e3b';
     ctx.fillText('</>', 0, 32);
 
@@ -315,7 +315,7 @@ function drawOfficialBuilderIdPass(ctx, imgElement, w, h, config) {
   ctx.fillStyle = '#eab308';
   ctx.fillText('CONNECT  •  BUILD  •  GROW', w / 2, navY + 68);
 
-  ctx.font = '600 17px "Geist Mono", monospace';
+  ctx.font = '600 17px Inter, sans-serif';
   ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
   ctx.fillText(builderTime || '2:47 pm studio', w / 2, navY + 98);
 
