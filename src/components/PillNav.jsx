@@ -10,7 +10,7 @@ export default function PillNav() {
         </span>
       </a>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: 'var(--text-muted)', fontFamily: 'var(--font-sans)' }}>
         <span>October 2026 • Goa, India</span>
       </div>
     </nav>
