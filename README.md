@@ -10,7 +10,8 @@
 </p>
 
 <p align="center">
-  <img src="./assets/project-banner.png"
+  <img src="<img width="1340" height="762" alt="image" src="https://github.com/user-attachments/assets/fe64d466-a26c-4469-bc8f-7d1277455af0" />
+"
        width="90%"
        alt="HH Goa Builder Pass Studio"/>
 </p>
